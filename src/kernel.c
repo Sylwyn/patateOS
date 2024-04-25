@@ -91,14 +91,6 @@ char ascii_pattern[] =
 " #    # #  #  # #  #  #   # #   #"
 " #    # #  #  # #  #  ##  ### ## ";
 */
-
-char ascii_pattern[] = 
-" ###   #  ###  #  ### ##  ###   ##"
-" # #  # #  #  # #  #  #   # #  #  "
-" ###  ###  #  ###  #  ##  # #   # "
-" #    # #  #  # #  #  #   # #    #"
-" #    # #  #  # #  #  ##  ###  ## ";
-
 // The following will be our kernel's entry point.
 // If renaming _start() to something else, make sure to change the
 // linker script accordingly.
@@ -117,11 +109,13 @@ void _start(void) {
     // Fetch the first framebuffer.
     struct limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
     // Note: we assume the framebuffer model is RGB with 32-bit pixels.
-    size_t n = 2; //size of cubes
+    size_t n = 2; //size of pixels
     size_t width = 34;
     size_t height = 5;
+
     size_t hori_offset = framebuffer->width/2 - width * n ;
     size_t vert_offset = (framebuffer->height/2 -height *n )* framebuffer->width;
+
     for (size_t x = 0; x < width; x++) {
         for (size_t y = 0; y < height; y++) {
             // Calculer l'indice dans le motif ASCII correspondant au pixel actuel
@@ -139,9 +133,10 @@ void _start(void) {
             }
 
             volatile uint32_t *fb_ptr = framebuffer->address;
+	    //print pixel of size n 
             fb_ptr[vert_offset + hori_offset + y*4 * (framebuffer->pitch / 4) + x*4] = pixel_color;
             fb_ptr[vert_offset + hori_offset + y*4   * (framebuffer->pitch / 4) + x*4+1] = pixel_color;
-          fb_ptr[vert_offset + hori_offset + (y+1)*4 * (framebuffer->pitch / 4) + x*4  ] = pixel_color;
+            fb_ptr[vert_offset + hori_offset + (y+1)*4 * (framebuffer->pitch / 4) + x*4  ] = pixel_color;
             fb_ptr[vert_offset + hori_offset + (y+1)*4 * (framebuffer->pitch / 4) + x*4+1] = pixel_color; */
         }
     }
