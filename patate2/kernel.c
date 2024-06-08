@@ -1,8 +1,6 @@
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdint.h>
-#include <unistd.h>
-
+// #include <stdbool.h>
+//#include <stdint.h>
+//#include <stddef.h>
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(__linux__)
 #error "You are not using a cross-compiler, you will most certainly run into trouble"
@@ -12,7 +10,15 @@
 #if !defined(__i386__)
 #error "This tutorial needs to be compiled with a ix86-elf compiler"
 #endif
- 
+
+typedef unsigned char __uint8_t;
+typedef unsigned short int __uint16_t;
+
+typedef __uint8_t uint8_t;
+typedef __uint16_t uint16_t;
+
+typedef typeof(sizeof(0)) size_t; // valid since C23
+
 /* Hardware text mode color constants. */
 enum vga_color {
 	VGA_COLOR_BLACK = 0,
@@ -146,7 +152,7 @@ void terminal_putchar(char c)
 	if (++terminal_column == VGA_WIDTH) {
 		terminal_column = 0;
 		if (++terminal_row == VGA_HEIGHT)
-			terminal_scroll;
+			terminal_scroll();
 	}
 	}
 }
