@@ -6,15 +6,20 @@ LDPARAMS = -melf_i386
 
 objects = loader.o kernel.o
 
+
+#compilation of cpp files
 %.o: %.cpp
 	g++ $(GPARAMS) -o $@ -c $<
 
+#compilation of assembly files
 %.o: %.s
 	as $(ASPARAMS) -o $@ $<
 
+#linking into kernel binary file
 mykernel.bin: linker.ld $(objects)
 	ld $(LDPARAMS) -T $< -o $@ $(objects)
 
+#creation of iso file for vm
 mykernel.iso: mykernel.bin
 	mkdir iso
 	mkdir iso/boot
@@ -35,6 +40,7 @@ mykernel.iso: mykernel.bin
 	rm -rf iso
 
 
+#launch VM containing the os ( only after having configurated it in virtual box ) 
 run: mykernel.iso
 	(killall VirtualBoxVM && sleep 1) || true
 	VirtualBoxVM --startvm "newos2" &
