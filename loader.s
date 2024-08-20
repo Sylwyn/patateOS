@@ -24,9 +24,9 @@ loader:
 _stop: ; # infinite loop in case kernel die
   cli
   hlt
-  jmp _stop:
+  jmp _stop
 
 .section .bss
 .space 2*1024*1024 ; # 2 MiB 
 kernel_stack: 
-"
+

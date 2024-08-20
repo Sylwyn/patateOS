@@ -1,5 +1,6 @@
 #include "types.h" 
 
+#include "gdt.h" 
 
 // Simple print fonction using 0xB8000 adress of processor to print some stuff on screen for test 
 void printf(char * str) {
@@ -29,7 +30,9 @@ extern "C" void callConstructors(){
 // Have some information from bootloader in multiboot_structure and magicnumber that we keep
 extern "C" void kernelMain(void * multiboot_structure, uint32_t magicnumber){
 
-	printf("UwU !!");
+	printf("            UwU !!               ");
+	
+	GlobalDescriptorTable gdt;
 
 	while(1);
 
