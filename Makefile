@@ -4,7 +4,7 @@ ASPARAMS = --32
 
 LDPARAMS = -melf_i386
 
-objects = loader.o gdt.o kernel.o
+objects = loader.o gdt.o port.o kernel.o
 
 
 #compilation of cpp files
@@ -44,3 +44,7 @@ mykernel.iso: mykernel.bin
 run: mykernel.iso
 	(killall VirtualBoxVM && sleep 1) || true
 	VirtualBoxVM --startvm "newos2" &
+
+.PHONY: clean
+clean:
+	rm -f $(objects) mykernel.bin mykernel.iso
