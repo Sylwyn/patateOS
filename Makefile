@@ -21,9 +21,9 @@ mykernel.bin: linker.ld $(objects)
 
 #creation of iso file for vm
 mykernel.iso: mykernel.bin
-	mkdir iso
-	mkdir iso/boot
-	mkdir iso/boot/grub
+	mkdir --parents iso
+	mkdir --parents iso/boot
+	mkdir --parents iso/boot/grub
 	cp $< iso/boot
 	echo 'set timeout=0' >> iso/boot/grub/grub.cfg
 	echo 'set default=0' >> iso/boot/grub/grub.cfg
