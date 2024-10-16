@@ -3,7 +3,7 @@
 #include "gdt.h"
 
 // Simple print fonction using 0xB8000 adress of processor to print some stuff on screen for test
-void printf(char * str) {
+void printf(const char * str) {
     static uint16_t * VideoMemory = (uint16_t *) 0xB8000;
 
     static uint8_t x = 0, y = 0;
