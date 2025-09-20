@@ -2,11 +2,12 @@
 
 #include "gdt.h"
 
-// Simple print fonction using 0xB8000 adress of processor to print some stuff on screen for test
-void printf(const char * str) {
+static uint8_t x = 0, y = 0; //defined outside of any function so that they can be called from print and clear functions
+
+// Simple string print fonction using 0xB8000 adress of processor to print some stuff on screen for test
+void print_string(const char * str) {
     static uint16_t * VideoMemory = (uint16_t *) 0xB8000;
 
-    static uint8_t x = 0, y = 0;
 
 
 
@@ -31,11 +32,13 @@ void printf(const char * str) {
 
         if (y>=25)
         {
-            for(y=0; y<25; y++)
-                for (x=0; x<80; x++)
-                    VideoMemory[80*y+x]= ( VideoMemory[80*y+x] & 0xFF00) | ' ';
+            for (x=0; x<80; x++) {
+                for(y=0; y<24; y++)
+                    VideoMemory[80*y+x]= ( VideoMemory[80*(y+1)+x]); //make all characters go up one line when writing under bottom line
+                VideoMemory[80*y+x]= (VideoMemory[80*y+x] & 0xFF00) | ' '; //set all characters in the last line to ' '
+            }
             x=0;
-            y=0;
+            y=24;
 
         }
 
@@ -44,6 +47,14 @@ void printf(const char * str) {
 
 }
 
+void clear() {
+    static uint16_t * VideoMemory = (uint16_t *) 0xB8000;
+    for(y=0; y<24; y++)
+        for (x=0; x<80; x++)
+            VideoMemory[80*y+x]= (VideoMemory[80*y+x] & 0xFF00) | ' '; //set all characters to ' '
+    x=0;
+    y=0;
+}
 
 
 // initialize constructor for kernel
@@ -63,9 +74,13 @@ extern "C" void callConstructors() {
 // Have some information from bootloader in multiboot_structure and magicnumber that we keep
 extern "C" void kernelMain(void * multiboot_structure, uint32_t magicnumber) {
 
-    printf("\n");
-    printf("UwU !!\n");
-    printf("OwO !!\n");
+    print_string("\n");
+    print_string("UwU !!\n");
+    clear();
+    for(uint8_t i=0; i<13; i+=1){
+        print_string("OwO !!\n");
+        print_string("EwE !!\n");
+    }
 
     GlobalDescriptorTable gdt;
 
