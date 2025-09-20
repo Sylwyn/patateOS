@@ -36,7 +36,7 @@ void print_string(const char * str) {
                 for(y=0; y<24; y++)
                     VideoMemory[80*y+x]= ( VideoMemory[80*(y+1)+x]); //make all characters go up one line when writing under bottom line
                 VideoMemory[80*y+x]= (VideoMemory[80*y+x] & 0xFF00) | ' '; //set all characters in the last line to ' '
-	    }
+            }
             x=0;
             y=24;
 
