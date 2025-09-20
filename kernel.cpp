@@ -2,10 +2,10 @@
 
 #include "gdt.h"
 
-static uint8_t x = 0, y = 0;
+static uint8_t x = 0, y = 0; //defined outside of any function so that they can be called from print and clear functions
 
-// Simple print fonction using 0xB8000 adress of processor to print some stuff on screen for test
-void print(const char * str) {
+// Simple string print fonction using 0xB8000 adress of processor to print some stuff on screen for test
+void print_string(const char * str) {
     static uint16_t * VideoMemory = (uint16_t *) 0xB8000;
 
 
@@ -74,12 +74,12 @@ extern "C" void callConstructors() {
 // Have some information from bootloader in multiboot_structure and magicnumber that we keep
 extern "C" void kernelMain(void * multiboot_structure, uint32_t magicnumber) {
 
-    print("\n");
-    print("UwU !!\n");
+    print_string("\n");
+    print_string("UwU !!\n");
     clear();
     for(uint8_t i=0; i<13; i+=1){
-        print("OwO !!\n");
-        print("EwE !!\n");
+        print_string("OwO !!\n");
+        print_string("EwE !!\n");
     }
 
     GlobalDescriptorTable gdt;
